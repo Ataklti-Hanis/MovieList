@@ -49,18 +49,26 @@ const average = (arr) => arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
 
 const KEY = "2ec0a29e";
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "interstellar";
+  const tempQuery = "interstellar";
+  useEffect(function () {
+    console.log("A");
+  });
+  useEffect(function () {
+    console.log("B");
+  });
+  console.log("C");
   useEffect(
     function () {
       async function fetchMovies() {
         try {
           setIsLoading(true);
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`
           );
           if (!res.ok) throw new Error("Network response was not Ok");
           const data = await res.json();
@@ -81,7 +89,7 @@ export default function App() {
   return (
     <>
       <NavBar movies={movies}>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
       <Main movies={movies}>
@@ -140,9 +148,7 @@ function Logo() {
     </div>
   );
 }
-function Search() {
-  const [query, setQuery] = useState("");
-
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"
